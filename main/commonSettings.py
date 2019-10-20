@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'graphene_django',
+    'main',
+    'course',
+    'status',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +126,7 @@ DATABASES = {
     }
 }
 """
+
+GRAPHENE = {
+    'SCHEMA': 'main.schema.schema' # Where your Graphene schema lives
+}
