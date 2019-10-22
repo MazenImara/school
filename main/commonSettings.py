@@ -128,5 +128,13 @@ DATABASES = {
 """
 
 GRAPHENE = {
-    'SCHEMA': 'main.schema.schema' # Where your Graphene schema lives
+    'SCHEMA': 'main.schema.schema', # Where your Graphene schema lives
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
 }
+
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
