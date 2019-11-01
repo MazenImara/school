@@ -1,5 +1,5 @@
 import graphene
-from graphene import ObjectType, Node, Schema, Int
+from graphene import ObjectType, Node, Schema, Int, Mutation, String
 from graphene_django.fields import DjangoConnectionField
 from graphene_django.types import DjangoObjectType
 import graphql_jwt
@@ -35,6 +35,21 @@ class CourseQuery(ObjectType):
 
 ################### Mutation #####################
 
+class UpdateCourseStatus(Mutation):
+    success = String()
+
+    class Arguments:
+        statusId = Int()
+        courseId = Int()
+
+    def mutate(self, info, statusId, courseId):
+        course = Course.objects.get(pk=courseId)
+        course.updateStatus(statusId)
+        return UpdateCourseStatus(
+            success = "True",
+        )
+
+
 class CourseMutation(ObjectType):
-    pass
+    updateCourseStatus = UpdateCourseStatus.Field()
 

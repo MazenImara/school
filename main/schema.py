@@ -16,7 +16,7 @@ class Query(UserQuery, CourseQuery, StatusQuery, ObjectType):
 
 
 ################### Mutation #####################
-class Mutation(UserMutation, ObjectType):
+class Mutation(UserMutation, CourseMutation, ObjectType):
     pass
 
 

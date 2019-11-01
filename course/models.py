@@ -8,5 +8,9 @@ class Course(models.Model):
     title = models.CharField(max_length=255)
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
 
+    def updateStatus(self, statusId):
+        self.status = Status.objects.get(pk=statusId)
+        self.save()
+
     def __str__(self):
         return self.title

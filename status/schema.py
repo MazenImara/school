@@ -33,6 +33,8 @@ class StatusQuery(ObjectType):
 
 
 ################### Mutation #####################
+
+
 class StatusMutation(ObjectType):
     pass
 
