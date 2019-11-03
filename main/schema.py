@@ -1,8 +1,7 @@
 import graphene
 from graphene import ObjectType
 from user.schema import UserQuery, UserMutation
-from course.schema import CourseQuery, CourseMutation
-from status.schema import StatusQuery, StatusMutation
+from education.schema import EducationQuery, EducationMutation
 
 
 ################### Nodes #####################
@@ -11,12 +10,12 @@ from status.schema import StatusQuery, StatusMutation
 
 
 ################### Query #####################
-class Query(UserQuery, CourseQuery, StatusQuery, ObjectType):
+class Query(UserQuery, EducationQuery, ObjectType):
     pass
 
 
 ################### Mutation #####################
-class Mutation(UserMutation, CourseMutation, ObjectType):
+class Mutation(UserMutation, EducationMutation, ObjectType):
     pass
 
 
