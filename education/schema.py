@@ -7,7 +7,7 @@ from graphene_django.types import DjangoObjectType
 import graphql_jwt
 from graphql_jwt.decorators import login_required
 
-from education.models import Education, Status, Category, Task
+from education.models import *
 
 
 ################### Nodes #####################
@@ -27,9 +27,9 @@ class StatusNode(DjangoObjectType):
     def resolve_pk(self, info):
         return self.pk
 
-class CategoryNode(DjangoObjectType):
+class EducationCategoryNode(DjangoObjectType):
     class Meta:
-        model = Category
+        model = EducationCategory
         interfaces = (Node,)
     pk = Int()
     def resolve_pk(self, info):
@@ -63,7 +63,7 @@ class EducationQuery(ObjectType):
         pk = kwargs.get('pk')
         return Status.objects.get(pk=pk)
 
-    categories = DjangoConnectionField(CategoryNode)
+    categories = DjangoConnectionField(EducationCategoryNode)
 
     tasks = DjangoConnectionField(TaskNode)
     task = graphene.Field(TaskNode, pk=Int())
@@ -105,9 +105,9 @@ class CreateOrUpdateEducation(Mutation):
 
     def mutate(self, info, input=None):
         if input.pk:
-            education = Education.objects.get(pk=input.pk).graphql_update(input)
+            education = Education.objects.get(pk=input.pk).update(input)
         else:
-            education = Education().graphql_create(input, info.context.user)
+            education = Education().create(info.context.user, input)
 
         return CreateOrUpdateEducation(
             success = True,

@@ -5,6 +5,29 @@ from user.models import User
 # Create your models here.
 
 
+
+
+
+class EducationCategory(models.Model):
+	name = models.CharField(max_length=255)
+	value = models.CharField(max_length=255)
+	description = models.TextField("Description", null=True, blank=True)
+
+	def __str__(self):
+		return self.name
+
+class Task(models.Model):
+	name = models.CharField(max_length=255)
+	value = models.CharField(max_length=255)
+	order = models.IntegerField()
+	order = models.IntegerField()
+	education_category = models.ForeignKey(EducationCategory, related_name='tasks', on_delete=models.CASCADE)
+	description = models.TextField("Description", null=True, blank=True)
+	related_tasks = models.ManyToManyField('self', related_name='educations', blank=True)
+
+	def __str__(self):
+		return self.name
+
 class Status(models.Model):
 	name = models.CharField(max_length=255)
 	value = models.CharField(max_length=255)
@@ -12,26 +35,6 @@ class Status(models.Model):
 
 	def __str__(self):
 		return self.name
-
-
-class Task(models.Model):
-	name = models.CharField(max_length=255)
-	value = models.CharField(max_length=255)
-	order = models.IntegerField()
-	description = models.TextField("Description", null=True, blank=True)
-	related_tasks = models.ManyToManyField('self', related_name='educations')
-
-	def __str__(self):
-		return self.name
-
-class Category(models.Model):
-	name = models.CharField(max_length=255)
-	value = models.CharField(max_length=255)
-	description = models.TextField("Description", null=True, blank=True)
-
-	def __str__(self):
-		return self.name
-
 
 class Education(models.Model):
 	title = models.CharField(max_length=255)
@@ -43,7 +46,7 @@ class Education(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	deleted_at = models.DateTimeField(null=True, blank=True)
 	tasks = models.ManyToManyField(Task, related_name='educations', through='TaskMemberShip')
-	category = models.ForeignKey(Category, related_name='educations', on_delete=models.CASCADE)
+	category = models.ForeignKey(EducationCategory, related_name='educations', on_delete=models.CASCADE)
 
 	def updateStatus(self, statusId):
 		self.status = Status.objects.get(pk=statusId)
@@ -56,16 +59,22 @@ class Education(models.Model):
 		for key, value in data.items():
 			setattr(self, key, value)
 
-	def graphql_update(self, data):
+	def update(self, data=None):
 		self.setData(data)
 		self.save()
 		return self
 
-	def graphql_create(self, data, user):
+	def create(self, user=None, data=None):
 		self.setData(data)
 		self.save()
+		self.add_tasks()
 		self.users.add(user)
 		return self
+
+	def add_tasks(self):
+		tasks = Task.objects.filter(education_category=self.category)
+		self.tasks.add(*tasks)
+
 
 class TaskMemberShip(models.Model):
 	education = models.ForeignKey(Education, on_delete=models.CASCADE)

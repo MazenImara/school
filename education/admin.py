@@ -21,7 +21,7 @@ class CategoryAdmin(admin.ModelAdmin):
 	empty_value_display = '-empty-'
 
 
-admin.site.register(Category, CategoryAdmin)
+admin.site.register(EducationCategory, CategoryAdmin)
 
 
 class TaskAdmin(admin.ModelAdmin):

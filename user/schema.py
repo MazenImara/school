@@ -71,9 +71,9 @@ class CreateOrUpdateAdminUser(Mutation):
 
     def mutate(self, info, input=None):
         if input.pk:
-            user = User.objects.get(pk=input.pk).graphql_update(input)
+            user = User.objects.get(pk=input.pk).update(input)
         else:
-            user = User().graphql_create(input, 'admin')
+            user = User().create('admin', input)
 
         return CreateOrUpdateAdminUser(
             success = True,
@@ -91,9 +91,9 @@ class CreateOrUpdateEducatorUser(Mutation):
 
     def mutate(self, info, input=None):
         if input.pk:
-            user = User.objects.get(pk=input.pk).graphql_update(input)
+            user = User.objects.get(pk=input.pk).update(input)
         else:
-            user = User().graphql_create(input, 'educator')
+            user = User().create('educator', input)
 
         return CreateOrUpdateAdminUser(
             success = True,
@@ -111,9 +111,9 @@ class CreateOrUpdateVendorUser(Mutation):
 
     def mutate(self, info, input=None):
         if input.pk:
-            user = User.objects.get(pk=input.pk).graphql_update(input)
+            user = User.objects.get(pk=input.pk).update(input)
         else:
-            user = User().graphql_create(input, 'vendor')
+            user = User().create('vendor', input)
 
         return CreateOrUpdateAdminUser(
             success = True,

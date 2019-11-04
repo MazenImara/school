@@ -3,17 +3,13 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 
-from education.models import Category, Education
+from education.models import *
 from user.models import User
 
 
 
 
 def index(request):
-    education = Education()
-    category = Category.objects.get(pk=1)
-    education.category = category
-    education.title = 'input.title'
-    education.description = 'input.description'
-    education.save()
-    return HttpResponse(education.category.name)
+    education = Education.objects.all()[0]
+    education.add_tasks()
+    return HttpResponse(education.tasks.all())

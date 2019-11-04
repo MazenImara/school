@@ -85,12 +85,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 		for key, value in data.items():
 			setattr(self, key, value)
 
-	def graphql_update(self, data):
+	def update(self, data):
 		self.setData(data)
 		self.save()
 		return self
 
-	def graphql_create(self, data, group_name):
+	def create(self, group_name, data):
 		self.setData(data)
 		self.save()
 		return self.add_group(group_name)
