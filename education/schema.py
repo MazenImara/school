@@ -74,7 +74,9 @@ class EducationQuery(ObjectType):
 ################### Mutation #####################
 
 class UpdateEducationStatus(Mutation):
+    errors = String()
     success = Boolean()
+    education = Field(EducationNode)
 
     class Arguments:
         statusId = Int()
@@ -85,6 +87,7 @@ class UpdateEducationStatus(Mutation):
         education.updateStatus(statusId)
         return UpdateEducationStatus(
             success = True,
+            education = education
         )
 
 class EducationInput(InputObjectType):
